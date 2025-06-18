@@ -18,7 +18,7 @@ RESET:
 
 ; EXPRESSAO 1
     ldi r16, 3
-    ldi r17, 2
+    ldi r17, 4
     mov r18, r16
     add r18, r17
     rcall imprime_decimal
@@ -27,10 +27,57 @@ RESET:
     ldi r18, CR
     rcall envia_serial
 
-; EXPRESSAO 2 ignorada devido a erro: Operador nao suportado: V_MEM
-; EXPRESSAO 3 ignorada devido a erro: invalid literal for int() with base 10: 'float'
-; EXPRESSAO 4 ignorada devido a erro: invalid literal for int() with base 10: 'float'
-; EXPRESSAO 5 ignorada devido a erro: invalid literal for int() with base 10: 'int'
+; EXPRESSAO 2
+    ldi r16, 5
+    ldi r17, 2
+    mov r18, r16
+    mov r19, r17
+    dec r19
+exp2_loop:
+    breq exp2_fim
+    mov r0, r18
+    mov r1, r16
+    mul r0, r1
+    mov r18, r0
+    clr r1
+    dec r19
+    rjmp exp2_loop
+exp2_fim:
+    rcall imprime_decimal
+    ldi r18, LF
+    rcall envia_serial
+    ldi r18, CR
+    rcall envia_serial
+
+; EXPRESSAO 3
+    ldi r16, 6
+    ldi r17, 2
+    mov r24, r16
+    mov r25, r17
+    clr r18
+div3_loop:
+    cp r24, r25
+    brlo div3_fim
+    sub r24, r25
+    inc r18
+    rjmp div3_loop
+div3_fim:
+    ldi r19, 3
+    ldi r20, 1
+    mov r21, r19
+    add r21, r20
+    mov r0, r18
+    mov r1, r21
+    mul r0, r1
+    mov r22, r0
+    clr r1
+    mov r18, r22
+    rcall imprime_decimal
+    ldi r18, LF
+    rcall envia_serial
+    ldi r18, CR
+    rcall envia_serial
+
 
 ; Sub-rotina: envia caractere de r18 via serial
 envia_serial:
